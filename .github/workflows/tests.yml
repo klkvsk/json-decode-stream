@@ -38,10 +38,10 @@ jobs:
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest --dev --ignore-platform-reqs
+      run: composer install --prefer-dist --no-progress --no-suggest --dev
 
     - name: Run Psalm
-      run: psalm
+      run: vendor/bin/psalm
     
     - name: Run PHPUnit
-      run: phpunit
+      run: vendor/bin/phpunit
