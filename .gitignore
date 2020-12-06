@@ -1,4 +1,5 @@
 *.iml
+/composer.lock
 /.idea
 /vendor
 /tests/coverage/
