@@ -10,7 +10,7 @@ class TokenizerException extends JsonDecodeStreamException
     const CODE_MALFORMED_NUMBER = 201;
     const CODE_MALFORMED_STRING = 202;
 
-    protected function __construct($message, int $lineNumber, int $charNumber, int $code)
+    public function __construct($message, int $lineNumber, int $charNumber, int $code)
     {
         parent::__construct($message . " at $lineNumber:$charNumber", $code);
     }
