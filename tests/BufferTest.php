@@ -15,7 +15,7 @@ class BufferTest extends Test
     public function testSourceBufferSizes(int $size)
     {
         $buffer = new SourceBuffer(new StringSource('foobar'), $size);
-        $this->assertIsIterable($buffer);
+        $this->assertInstanceOf(\Iterator::class, $buffer);
         $this->assertSame([ 'f', 'o', 'o', 'b', 'a', 'r' ], iterator_to_array($buffer));
     }
 

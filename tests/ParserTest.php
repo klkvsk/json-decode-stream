@@ -17,9 +17,13 @@ class ParserTest extends Test
     public function testSamples($sampleFile)
     {
         $parser = Parser::fromFile($sampleFile);
+        /** @var array|null $root */
         $root = null;
+        /** @var array|null $current */
         $current = null;
+        /** @var array[] $current */
         $stack = [];
+        /** @var string|null $lastKey */
         $lastKey = null;
 
         $isStarted = false;
