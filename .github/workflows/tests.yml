@@ -24,7 +24,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: xdebug    
-        tools: php-cs-fixer, psalm, phpunit-7.5.20
+        tools: php-cs-fixer, psalm, phpunit:7.5.20
     
     - name: Setup PHPUnit 8
       uses: shivammathur/setup-php@v2
@@ -32,7 +32,7 @@ jobs:
       with:
         php-version: ${{ matrix.php-versions }}
         coverage: xdebug    
-        tools: php-cs-fixer, psalm, phpunit-8.5.13  
+        tools: php-cs-fixer, psalm, phpunit:8.5.13  
 
     - name: Setup PHPUnit 8
       uses: shivammathur/setup-php@v2
