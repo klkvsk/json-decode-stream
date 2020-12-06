@@ -41,8 +41,8 @@ jobs:
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest --dev
 
-    - name: Run Psalm
-      run: psalm
+ #   - name: Run Psalm
+ #     run: psalm
     
     - name: Run PHPUnit
       run: phpunit
