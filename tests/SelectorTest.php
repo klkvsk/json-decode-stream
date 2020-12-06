@@ -249,9 +249,6 @@ class SelectorTest extends Test
      */
     public function testSamplesDepth($sampleFile)
     {
-        if (is_object($sampleFile)) {
-            var_dump($sampleFile);
-        }
         $parser = Parser::fromFile($sampleFile);
         foreach ($parser->events() as $event) {
             if ($event->getId() == Event::VALUE) {
