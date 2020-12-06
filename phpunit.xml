@@ -1,11 +1,12 @@
 <?xml version="1.0"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.3/phpunit.xsd"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/7.0/phpunit.xsd"
          bootstrap="vendor/autoload.php"
          colors="true"
          beStrictAboutChangesToGlobalState="true"
          beStrictAboutOutputDuringTests="true"
 >
+    <!--
     <coverage>
         <include>
             <directory>src</directory>
@@ -16,6 +17,19 @@
             <text outputFile="tests/coverage/coverage.txt"/>
         </report>
     </coverage>
+    -->
+
+    <filter>
+        <whitelist processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+        </whitelist>
+    </filter>
+    <logging>
+        <log type="coverage-html" target="tests/coverage" />
+        <log type="coverage-clover" target="tests/coverage/coverage.xml"/>
+        <log type="coverage-text" target="tests/coverage/coverage.txt" showUncoveredFiles="true"/>
+    </logging>
+
     <testsuites>
         <testsuite name="main">
             <directory>tests</directory>
