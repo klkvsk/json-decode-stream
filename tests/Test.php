@@ -35,7 +35,7 @@ abstract class Test extends TestCase
             /** @noinspection PhpUnnecessaryLocalVariableInspection */
             $relativePathname = substr($file->getPathname(), strlen($searchPath));
 
-            yield $relativePathname => [ $file ];
+            yield $relativePathname => [ $file->getPathname() ];
         }
     }
 }

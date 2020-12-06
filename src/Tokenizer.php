@@ -10,11 +10,12 @@ use JsonDecodeStream\Internal\SourceBuffer;
 
 class Tokenizer implements IteratorAggregate
 {
-    const WHITESPACE_CHARS = " \t\r\n";
-    const LITERALS = [
-        Token::TRUE => true,
+    protected const WHITESPACE_CHARS = " \t\r\n";
+
+    protected const LITERALS = [
+        Token::TRUE  => true,
         Token::FALSE => false,
-        Token::NUMBER => null,
+        Token::NULL  => null,
     ];
 
     /** @var SourceBuffer */
