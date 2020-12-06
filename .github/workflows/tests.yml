@@ -56,7 +56,7 @@ jobs:
 
     - name: Install dependencies
       if: steps.composer-cache.outputs.cache-hit != 'true'
-      run: composer install --prefer-dist --no-progress --no-suggest --dev
+      run: composer install --prefer-dist --no-progress --no-suggest --dev --ignore-platform-reqs
 
     - name: Run Psalm
       run: psalm
