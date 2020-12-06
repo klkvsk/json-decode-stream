@@ -19,7 +19,7 @@ class Tokenizer implements IteratorAggregate
     ];
 
     /** @var SourceBuffer */
-    protected SourceBuffer $buffer;
+    protected $buffer;
 
     /** @var int|null */
     protected $lineNumber;
