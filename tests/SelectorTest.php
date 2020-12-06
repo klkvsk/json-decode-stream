@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use JsonDecodeStream\Event;
 use JsonDecodeStream\Exception\SelectorException;
 use JsonDecodeStream\Internal\Selector;
@@ -267,5 +266,4 @@ class SelectorTest extends Test
     {
         yield from $this->getSampleFiles('depth');
     }
-
 }

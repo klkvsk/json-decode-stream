@@ -3,8 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
-
 use JsonDecodeStream\Internal\Stack;
 use JsonDecodeStream\Internal\StackFrame;
 
@@ -107,5 +105,4 @@ class StackTest extends Test
 
         $this->assertEquals([ $a, $b ], $stackFrames);
     }
-
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use JsonDecodeStream\Parser;
 
 class CollectorTest extends Test
@@ -82,7 +81,4 @@ class CollectorTest extends Test
             json_encode($actual)
         );
     }
-
-
-
 }

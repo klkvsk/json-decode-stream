@@ -72,5 +72,4 @@ class FileSource implements SourceInterface
     {
         $this->stream()->rewind();
     }
-
 }

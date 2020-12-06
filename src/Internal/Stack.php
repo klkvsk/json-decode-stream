@@ -58,5 +58,4 @@ class Stack
     {
         $this->stack = clone $this->stack;
     }
-
 }

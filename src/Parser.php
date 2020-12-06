@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream;
 
-
 use Generator;
 use JsonDecodeStream\Collector\Collector;
 use JsonDecodeStream\Collector\CollectorInterface;
@@ -77,7 +76,7 @@ class Parser
         foreach ($selectorsArray as $selector) {
             if (is_string($selector)) {
                 $collectors[] = new Collector($selector, $objectsAsAssoc);
-            } else if ($selector instanceof CollectorInterface) {
+            } elseif ($selector instanceof CollectorInterface) {
                 $collectors[] = $selector;
             } else {
                 throw new ParserException(
@@ -100,7 +99,8 @@ class Parser
     }
 
     /**
-     * @return iterable|Generator|Event[]
+     * @return Generator|Event[]
+     * @psalm-return \Generator<Event>
      * @throws ParserException
      * @noinspection PhpStatementHasEmptyBodyInspection
      */
@@ -109,7 +109,8 @@ class Parser
         $stack = new Stack();
         $tokens = $this->tokens();
 
-        $createEvent = function (string $eventId, $value = null) use ($stack, &$token) {
+        // shortcut to event factory
+        $createEvent = function (string $eventId, $value = null) use ($stack, &$token): Event {
             return $this->createEvent($eventId, $value, $stack, $token->getLineNumber(), $token->getCharNumber());
         };
 
@@ -148,9 +149,9 @@ class Parser
                         $stack->current()->setAwaitsKey(true);
                     }
                     continue;
-                } else if ($stack->current()->isObject() && $token->getId() == Token::OBJECT_END) {
+                } elseif ($stack->current()->isObject() && $token->getId() == Token::OBJECT_END) {
                     // pass
-                } else if ($stack->current()->isArray() && $token->getId() == Token::ARRAY_END) {
+                } elseif ($stack->current()->isArray() && $token->getId() == Token::ARRAY_END) {
                     // pass
                 } else {
                     throw ParserException::expectedButGot('","', $token);

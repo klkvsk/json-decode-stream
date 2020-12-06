@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream;
 
-
 use JsonDecodeStream\Internal\Selector;
 use JsonDecodeStream\Internal\Stack;
 
@@ -72,7 +71,7 @@ class Event
         foreach ($this->stack->frames() as $frame) {
             if ($frame->isArray()) {
                 $path .= '[' . $frame->getLastKey() . ']';
-            } else if ($frame->isObject()) {
+            } elseif ($frame->isObject()) {
                 if (!empty($path)) {
                     $path .= '.';
                 }
@@ -108,5 +107,4 @@ class Event
     {
         return $this->charNumber;
     }
-
 }

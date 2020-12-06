@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use ArrayIterator;
 use JsonDecodeStream\Exception\SourceException;
 use JsonDecodeStream\Source\FileSource;

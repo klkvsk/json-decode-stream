@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Internal;
 
-
 use JsonDecodeStream\Exception\SelectorException;
 use UnexpectedValueException;
 
@@ -53,25 +52,25 @@ class Selector
                     $selectorStack,
                     [ 'type' => 'any' ]
                 );
-            } else if ($offset == 0 && preg_match('/^([a-z_\$][a-z0-9_\$]*)/i', $part, $matches)) {
+            } elseif ($offset == 0 && preg_match('/^([a-z_\$][a-z0-9_\$]*)/i', $part, $matches)) {
                 // `foo` but only as a beginning of selector
                 array_push(
                     $selectorStack,
                     [ 'type' => 'key', 'key' => $matches[1] ]
                 );
-            } else if (preg_match('/^\.([a-z_\$][a-z0-9_\$]*)/i', $part, $matches)) {
+            } elseif (preg_match('/^\.([a-z_\$][a-z0-9_\$]*)/i', $part, $matches)) {
                 // `.foo`
                 array_push(
                     $selectorStack,
                     [ 'type' => 'key', 'key' => $matches[1] ]
                 );
-            } else if (preg_match('/^\[(0|[1-9][0-9]*)]/', $part, $matches)) {
+            } elseif (preg_match('/^\[(0|[1-9][0-9]*)]/', $part, $matches)) {
                 // `[1]`
                 array_push(
                     $selectorStack,
                     [ 'type' => 'index', 'index' => (int)$matches[1] ]
                 );
-            } else if (preg_match('/^\[(0|[1-9][0-9]*)?:(0|[1-9][0-9]*)?]/', $part, $matches)) {
+            } elseif (preg_match('/^\[(0|[1-9][0-9]*)?:(0|[1-9][0-9]*)?]/', $part, $matches)) {
                 // `[1:9]` or `[1:]` or `[:9]`
                 $firstIndex = strlen($matches[1] ?? '') ? (int)$matches[1] : null;
                 $lastIndex = strlen($matches[2] ?? '') ? (int)$matches[2] : null;
@@ -82,7 +81,7 @@ class Selector
                     $selectorStack,
                     [ 'type' => 'range', 'start' => $firstIndex, 'end' => $lastIndex ]
                 );
-            } else if (preg_match('/^\["((?:[^"\\\\]+|\\\\.)*)"]/', $part, $matches)) {
+            } elseif (preg_match('/^\["((?:[^"\\\\]+|\\\\.)*)"]/', $part, $matches)) {
                 // `["foo"]` and also `["The \"Foo\" key"]`
                 array_push(
                     $selectorStack,

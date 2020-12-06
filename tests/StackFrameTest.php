@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use JsonDecodeStream\Internal\StackFrame;
 
 class StackFrameTest extends Test
@@ -49,6 +48,5 @@ class StackFrameTest extends Test
         $this->assertNull($frame->getLastKey());
         $frame->setLastKey('foo');
         $this->assertEquals('foo', $frame->getLastKey());
-
     }
 }

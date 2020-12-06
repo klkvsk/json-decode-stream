@@ -91,6 +91,4 @@ class StackFrame
     {
         return $this->elementCount;
     }
-
-
 }

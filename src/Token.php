@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream;
 
-
 class Token
 {
     public const OBJECT_START = '{';
@@ -68,5 +67,4 @@ class Token
     {
         return $this->charNumber;
     }
-
 }

@@ -21,7 +21,7 @@ class Collector implements CollectorInterface
     protected $stack = [];
     /** @var null|string */
     protected $key = null;
-    /** @var string[] */
+    /** @var string[]|null[] */
     protected $keyStack = [];
 
     public function __construct(string $selector, bool $objectsAsAssocArrays = false)
@@ -50,7 +50,7 @@ class Collector implements CollectorInterface
             case Event::VALUE:
                 if ($this->current === null) {
                     return [ $event->getPath(), $event->getValue() ];
-                } else if ($this->key !== null && $this->hasKeyInCurrent($this->key)) {
+                } elseif ($this->key !== null && $this->hasKeyInCurrent($this->key)) {
                     throw CollectorException::duplicatedKey($this->key, $event);
                 } else {
                     $this->setInCurrent($event->getValue(), $this->key);
@@ -60,12 +60,12 @@ class Collector implements CollectorInterface
             case Event::OBJECT_START:
             case Event::ARRAY_START:
                 if ($this->current !== null) {
-                    $this->stack [] = $this->current;
-                    $this->keyStack [] = $this->key;
+                    $this->stack[] = $this->current;
+                    $this->keyStack[] = $this->key;
                 }
                 if ($event->getId() == Event::OBJECT_START) {
                     $this->current = $this->objectsAsAssocArrays ? [] : new stdClass();
-                } else if ($event->getId() == Event::ARRAY_START) {
+                } elseif ($event->getId() == Event::ARRAY_START) {
                     $this->current = [];
                 }
                 $this->key = null;
@@ -99,7 +99,7 @@ class Collector implements CollectorInterface
         }
         if (is_object($this->current)) {
             return isset($this->current->{$key});
-        } else if (is_array($this->current)) {
+        } elseif (is_array($this->current)) {
             return isset($this->current[$key]);
         } else {
             return false;
@@ -110,12 +110,10 @@ class Collector implements CollectorInterface
     {
         if (is_object($this->current)) {
             $this->current->{$key} = $value;
-        } else if (is_array($this->current) && $key === null) {
-            $this->current [] = $value;
-        } else if (is_array($this->current)) {
+        } elseif (is_array($this->current) && $key === null) {
+            $this->current[] = $value;
+        } elseif (is_array($this->current)) {
             $this->current[$key] = $value;
         }
     }
-
-
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Source;
 
-
 class StringSource implements SourceInterface
 {
     /** @var string */
@@ -32,6 +31,4 @@ class StringSource implements SourceInterface
     {
         $this->position = 0;
     }
-
-
 }

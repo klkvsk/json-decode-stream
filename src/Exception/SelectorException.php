@@ -5,5 +5,4 @@ namespace JsonDecodeStream\Exception;
 
 class SelectorException extends JsonDecodeStreamException
 {
-
 }

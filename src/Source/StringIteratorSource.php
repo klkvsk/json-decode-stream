@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Source;
 
-
 use ArrayIterator;
 use IteratorIterator;
 use JsonDecodeStream\Exception\SourceException;
@@ -48,7 +47,8 @@ class StringIteratorSource implements SourceInterface
         if ($iterable instanceof Traversable) {
             $this->stringIterator = new IteratorIterator($iterable);
         } else {
-            throw new SourceException('Can not iterate over '
+            throw new SourceException(
+                'Can not iterate over '
                 . (is_object($iterable) ? get_class($iterable) : gettype($iterable))
             );
         }

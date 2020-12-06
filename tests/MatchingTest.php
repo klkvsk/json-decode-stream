@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use JsonDecodeStream\Event;
 use JsonDecodeStream\Parser;
 
@@ -172,13 +171,10 @@ class MatchingTest extends Test
         $collected = [];
         foreach ($this->parser->events() as $event) {
             if ($event->getId() == Event::VALUE && $event->matchPath($selector)) {
-                $collected [] = $event->getValue();
+                $collected[] = $event->getValue();
             }
         }
         
         return $collected;
     }
-
-
-
 }

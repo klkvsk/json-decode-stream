@@ -46,6 +46,4 @@ class StreamSource implements SourceInterface
 
         fseek($this->stream, 0, SEEK_SET);
     }
-
-
 }

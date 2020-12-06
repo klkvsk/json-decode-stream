@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use JsonDecodeStream\Event;
 use JsonDecodeStream\Parser;
 
@@ -63,7 +62,7 @@ class ParserTest extends Test
                     $this->assertNull($lastKey);
                     $lastKey = $event->getValue();
                     break;
-                case Event::VALUE;
+                case Event::VALUE:
                     $this->assertNotNull($current);
                     if ($lastKey !== null) {
                         $this->assertArrayNotHasKey($lastKey, $current, 'duplicated key: ' . $lastKey);
@@ -85,5 +84,4 @@ class ParserTest extends Test
     {
         yield from $this->getSampleFiles();
     }
-
 }

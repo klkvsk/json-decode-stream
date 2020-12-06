@@ -37,5 +37,4 @@ class ParserException extends JsonDecodeStreamException
             $gotToken->getLineNumber(), $gotToken->getCharNumber(),
         );
     }
-
 }

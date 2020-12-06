@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Internal;
 
-
 use Iterator;
 use JsonDecodeStream\Source\SourceInterface;
 
@@ -70,5 +69,4 @@ class SourceBuffer implements Iterator
         $this->source->rewind();
         $this->nextBuffer();
     }
-
 }

@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
-
 use JsonDecodeStream\Exception\TokenizerException;
 use JsonDecodeStream\Internal\SourceBuffer;
 use JsonDecodeStream\Source\FileSource;
@@ -156,5 +155,4 @@ class TokenizerTest extends Test
     {
         yield from $this->getSampleFiles();
     }
-
 }

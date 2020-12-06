@@ -42,5 +42,4 @@ class TokenizerException extends JsonDecodeStreamException
             sprintf('Malformed string `%s`', $string), $lineNumber, $charNumber, static::CODE_MALFORMED_STRING
         );
     }
-
 }

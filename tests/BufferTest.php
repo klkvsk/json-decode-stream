@@ -66,7 +66,4 @@ class BufferTest extends Test
         $buffer->rewind();
         $this->assertFalse($buffer->valid());
     }
-
-
-
 }

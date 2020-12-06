@@ -30,6 +30,11 @@ class Tokenizer implements IteratorAggregate
         $this->buffer = $buffer;
     }
 
+    /**
+     * @return \Traversable|Token[]
+     * @psalm-return \Traversable<Token>
+     * @throws TokenizerException
+     */
     public function getIterator()
     {
         return $this->tokens();
@@ -37,9 +42,10 @@ class Tokenizer implements IteratorAggregate
 
     /**
      * @return Generator|Token[]
+     * @psalm-return \Traversable<Token>
      * @throws TokenizerException
      */
-    public function tokens(): Generator
+    public function tokens()
     {
         $number = null;
         $string = null;
@@ -73,7 +79,7 @@ class Tokenizer implements IteratorAggregate
                     $string .= $char;
                     $stringSlashes++;
                     continue;
-                } else if ($char == '"' && ($stringSlashes % 2) == 0) {
+                } elseif ($char == '"' && ($stringSlashes % 2) == 0) {
                     $parsedString = $this->parseString($string);
                     yield $this->createToken(Token::STRING, $parsedString);
                     $string = null;
@@ -115,31 +121,31 @@ class Tokenizer implements IteratorAggregate
                 continue;
             }
 
-            if (strpos(self::WHITESPACE_CHARS, $char) !== false) {
+            if (strpos(static::WHITESPACE_CHARS, $char) !== false) {
                 $whitespace = $char;
-            } else if ($char == "{") {
+            } elseif ($char == "{") {
                 yield $this->createToken(Token::OBJECT_START);
-            } else if ($char == "}") {
+            } elseif ($char == "}") {
                 yield $this->createToken(Token::OBJECT_END);
-            } else if ($char == "[") {
+            } elseif ($char == "[") {
                 yield $this->createToken(Token::ARRAY_START);
-            } else if ($char == "]") {
+            } elseif ($char == "]") {
                 yield $this->createToken(Token::ARRAY_END);
-            } else if ($char == ":") {
+            } elseif ($char == ":") {
                 yield $this->createToken(Token::KEY_DELIMITER);
-            } else if ($char == ",") {
+            } elseif ($char == ",") {
                 yield $this->createToken(Token::COMA);
-            } else if ($char == '"') {
+            } elseif ($char == '"') {
                 $string = '';
-            } else if (strpos('+-0123456789', $char) !== false) {
+            } elseif (strpos('+-0123456789', $char) !== false) {
                 $number = $char;
-            } else if ($char == 't') {
+            } elseif ($char == 't') {
                 $specialActual = Token::TRUE;
                 $specialParsed = $char;
-            } else if ($char == 'f') {
+            } elseif ($char == 'f') {
                 $specialActual = Token::FALSE;
                 $specialParsed = $char;
-            } else if ($char == 'n') {
+            } elseif ($char == 'n') {
                 $specialActual = Token::NULL;
                 $specialParsed = $char;
             } else {
@@ -171,7 +177,7 @@ class Tokenizer implements IteratorAggregate
     {
         if (preg_match_all('/^[+-]?(0|[1-9][0-9]*)$/', $number)) {
             return intval($number);
-        } else if (preg_match('/^[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][-+]?(0|[1-9][0-9]*))?$/', $number)) {
+        } elseif (preg_match('/^[+-]?(0|[1-9][0-9]*)(\.[0-9]+)?([eE][-+]?(0|[1-9][0-9]*))?$/', $number)) {
             return doubleval($number);
         } else {
             throw TokenizerException::malformedNumber($number, $this->lineNumber, $this->charNumber);
@@ -201,5 +207,4 @@ class Tokenizer implements IteratorAggregate
     {
         return new Token($tokenId, $value, $this->lineNumber, $this->charNumber);
     }
-
 }
