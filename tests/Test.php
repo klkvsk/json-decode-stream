@@ -10,6 +10,10 @@ use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 use SplFileInfo;
 
+/**
+ * @psal
+ * @package JsonDecodeStream\Tests
+ */
 abstract class Test extends TestCase
 {
     protected function getSampleFiles($subdirectory = '')
