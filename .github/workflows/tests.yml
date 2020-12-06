@@ -34,7 +34,7 @@ jobs:
         coverage: xdebug    
         tools: php-cs-fixer, psalm, phpunit:8.5.13  
 
-    - name: Setup PHPUnit 8
+    - name: Setup PHPUnit 9
       uses: shivammathur/setup-php@v2
       if: matrix.php-versions >= '7.3'
       with:
@@ -58,8 +58,8 @@ jobs:
       if: steps.composer-cache.outputs.cache-hit != 'true'
       run: composer install --prefer-dist --no-progress --no-suggest --dev
 
- #   - name: Run Psalm
- #     run: psalm
+    - name: Run Psalm
+      run: psalm
     
-    - name: Run PHPUnit 7
+    - name: Run PHPUnit
       run: phpunit
