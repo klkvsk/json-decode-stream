@@ -24,7 +24,7 @@ class ParserException extends JsonDecodeStreamException
         return new static(
             sprintf('Unexpected token `%s`', $token->getId()),
             static::CODE_UNEXPECTED_TOKEN,
-            $token->getLineNumber(), $token->getCharNumber(),
+            $token->getLineNumber(), $token->getCharNumber()
         );
     }
 
@@ -34,7 +34,7 @@ class ParserException extends JsonDecodeStreamException
         return new static(
             sprintf('Expected `%s` but got `%s`', $expected, $got),
             static::CODE_EXPECTED_BUT_GOT,
-            $gotToken->getLineNumber(), $gotToken->getCharNumber(),
+            $gotToken->getLineNumber(), $gotToken->getCharNumber()
         );
     }
 }
