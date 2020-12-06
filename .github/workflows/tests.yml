@@ -18,30 +18,29 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Setup PHP {{ matrix.php-version }}
-      uses: shivammathur/setup-php@v2
-      with:
-        php-version: ${{ matrix.php-versions }}
-        coverage: xdebug    
-        tools: php-cs-fixer, psalm    
-
     - name: Setup PHPUnit 7
       uses: shivammathur/setup-php@v2
       if: matrix.php-versions == '7.1'
       with:
-        tools: phpunit-7
+        php-version: ${{ matrix.php-versions }}
+        coverage: xdebug    
+        tools: php-cs-fixer, psalm, phpunit-7.5.20
     
     - name: Setup PHPUnit 8
       uses: shivammathur/setup-php@v2
       if: matrix.php-versions == '7.2'
       with:
-        tools: phpunit-8
+        php-version: ${{ matrix.php-versions }}
+        coverage: xdebug    
+        tools: php-cs-fixer, psalm, phpunit-8.5.13  
 
     - name: Setup PHPUnit 8
       uses: shivammathur/setup-php@v2
       if: matrix.php-versions >= '7.3'
       with:
-        tools: phpunit-9
+        php-version: ${{ matrix.php-versions }}
+        coverage: xdebug    
+        tools: php-cs-fixer, psalm, phpunit
 
     - name: Validate composer.json and composer.lock
       run: composer validate
