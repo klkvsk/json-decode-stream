@@ -3,11 +3,14 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Exception;
 
+use JsonDecodeStream\Event;
 use JsonDecodeStream\Token;
 
 class ParserException extends JsonDecodeStreamException
 {
     const CODE_INVALID_ARGUMENT = 1;
+    const CODE_UNEXPECTED_VALUE = 2;
+
     const CODE_UNEXPECTED_TOKEN = 101;
     const CODE_EXPECTED_BUT_GOT = 102;
 
@@ -36,5 +39,10 @@ class ParserException extends JsonDecodeStreamException
             static::CODE_EXPECTED_BUT_GOT,
             $gotToken->getLineNumber(), $gotToken->getCharNumber()
         );
+    }
+
+    public static function unexpectedCollectorReturn($yielded, Event $event)
+    {
+
     }
 }

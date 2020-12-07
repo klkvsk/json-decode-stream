@@ -66,8 +66,12 @@ class Parser
     {
         if (is_string($selectors)) {
             $selectorsArray = explode(',', $selectors);
-        } else {
+        } else if (is_array($selectors)) {
             $selectorsArray = $selectors;
+        } else if ($selectors instanceof CollectorInterface) {
+            $selectorsArray = [ $selectors ];
+        } else {
+            throw new ParserException('Unexpected selectors are provided', ParserException::CODE_INVALID_ARGUMENT);
         }
         if (empty($selectorsArray)) {
             throw new ParserException('No selectors are provided', ParserException::CODE_INVALID_ARGUMENT);
@@ -91,8 +95,23 @@ class Parser
             foreach ($collectors as $collector) {
                 $yielded = $collector->processEvent($event);
                 if (is_array($yielded)) {
+                    if (count($yielded) != 2) {
+                        throw ParserException::unexpectedCollectorReturn($yielded, $event);
+                    }
                     [ $key, $value ] = $yielded;
                     yield $key => $value;
+                } else if ($yielded instanceof Generator) {
+                    foreach ($yielded as $yieldedSingle) {
+                        if (!is_array($yieldedSingle) || count($yieldedSingle) != 2) {
+                            throw ParserException::unexpectedCollectorReturn($yielded, $event);
+                        }
+                        [ $key, $value ] = $yieldedSingle;
+                        yield $key => $value;
+                    }
+                } else if ($yielded === null) {
+                    continue;
+                } else {
+                    throw ParserException::unexpectedCollectorReturn($yielded, $event);
                 }
             }
         }

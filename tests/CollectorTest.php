@@ -3,6 +3,8 @@ declare(strict_types=1);
 
 namespace JsonDecodeStream\Tests;
 
+use JsonDecodeStream\Collector\CollectorInterface;
+use JsonDecodeStream\Event;
 use JsonDecodeStream\Parser;
 
 class CollectorTest extends Test
@@ -34,6 +36,47 @@ class CollectorTest extends Test
             }';
 
         $this->parser = Parser::fromString($json);
+    }
+
+    public function testCustomCollectorWithReturn()
+    {
+        $collector = new class implements CollectorInterface {
+            public function processEvent(Event $event)
+            {
+                if ($event->getId() == Event::VALUE && $event->matchPath('ids[]')) {
+                    return [ $event->getPath(), "ID_" . $event->getValue() ];
+                } else {
+                    return null;
+                }
+            }
+        };
+
+        $items = iterator_to_array($this->parser->items($collector));
+
+        $this->assertArraysAreEqual([ 'ids[0]' => "ID_1", 'ids[1]' => "ID_2", 'ids[2]' => "ID_3" ], $items);
+    }
+
+
+    public function testCustomCollectorWithYield()
+    {
+        $collector = new class implements CollectorInterface {
+            protected $count = 0;
+            protected $sum = 0;
+            public function processEvent(Event $event)
+            {
+                if ($event->getId() == Event::VALUE && $event->matchPath('ids[]')) {
+                    $this->count++;
+                    $this->sum += $event->getValue();
+                } else if ($event->getId() == Event::DOCUMENT_END) {
+                    yield [ 'count', $this->count ];
+                    yield [ 'sum', $this->sum ];
+                }
+            }
+        };
+
+        $items = iterator_to_array($this->parser->items($collector));
+
+        $this->assertArraysAreEqual([ 'count' => 3, 'sum' => 6 ], $items);
     }
 
     /**
