@@ -44,7 +44,7 @@ class ParserException extends JsonDecodeStreamException
     public static function unexpectedCollectorReturn($yielded, Event $event)
     {
         if (is_array($yielded)) {
-            $dumped = 'array of '  . count($yielded);
+            $dumped = 'array of ' . count($yielded);
         } else if (is_object($yielded)) {
             $dumped = get_class($yielded);
         } else {
