@@ -54,11 +54,11 @@ class Tokenizer implements IteratorAggregate
         $string = null;
         /** @var int $stringSlashes how many sequentative slashes are found in string */
         $stringSlashes = 0;
-        /** @var string|null $string collecting chars of whitespace token */
+        /** @var string|null $whitespace collecting chars of whitespace token */
         $whitespace = null;
-        /** @var string|null $string holding the string for awaited literal */
+        /** @var string|null $literalAwaited holding the string for awaited literal */
         $literalAwaited = null;
-        /** @var string|null $string collecting chars of literal token */
+        /** @var string|null $literal collecting chars of literal token */
         $literal = null;
 
         $this->lineNumber = 1;

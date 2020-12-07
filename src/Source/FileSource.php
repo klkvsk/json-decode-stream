@@ -41,7 +41,7 @@ class FileSource implements SourceInterface
             $exception = null;
             try {
                 $handle = fopen($this->filename, 'r');
-                if (!$handle) {
+                if ($handle === false) {
                     $error = error_get_last();
                     throw new \RuntimeException($error ? $error['message'] : 'fopen error');
                 }
