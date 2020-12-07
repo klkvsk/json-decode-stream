@@ -18,7 +18,7 @@ class Tokenizer implements IteratorAggregate
         Token::NULL  => null,
     ];
 
-    /** @var SourceBuffer */
+    /** @var SourceBuffer|string[] */
     protected $buffer;
 
     /** @var int|null */
@@ -48,12 +48,18 @@ class Tokenizer implements IteratorAggregate
      */
     public function tokens()
     {
+        /** @var string|null $number collecting chars of numeric token */
         $number = null;
+        /** @var string|null $string collecting chars of string token */
         $string = null;
+        /** @var int $stringSlashes how many sequentative slashes are found in string */
         $stringSlashes = 0;
+        /** @var string|null $string collecting chars of whitespace token */
         $whitespace = null;
-        $specialActual = null;
-        $specialParsed = null;
+        /** @var string|null $string holding the string for awaited literal */
+        $literalAwaited = null;
+        /** @var string|null $string collecting chars of literal token */
+        $literal = null;
 
         $this->lineNumber = 1;
         $this->charNumber = 1;
@@ -71,8 +77,8 @@ class Tokenizer implements IteratorAggregate
                     continue;
                 }
                 $parsedNumber = $this->parseNumber($number);
-                yield $this->createToken(Token::NUMBER, $parsedNumber);
                 $number = null;
+                yield $this->createToken(Token::NUMBER, $parsedNumber);
             }
 
             if ($string !== null) {
@@ -103,20 +109,20 @@ class Tokenizer implements IteratorAggregate
                 }
             }
 
-            if ($specialActual !== null) {
-                if (strpos($specialActual, $char) !== false) {
-                    $specialParsed .= $char;
+            if ($literalAwaited !== null) {
+                if (strpos($literalAwaited, $char) !== false) {
+                    $literal .= $char;
                 } else {
-                    throw TokenizerException::unexpectedToken($specialParsed, $this->lineNumber, $this->charNumber);
+                    throw TokenizerException::unexpectedToken($literal, $this->lineNumber, $this->charNumber);
                 }
 
-                if (strlen($specialParsed) == strlen($specialActual)) {
-                    if ($specialParsed === $specialActual) {
-                        yield $this->createToken($specialActual, static::LITERALS[$specialActual]);
-                        $specialActual = null;
-                        $specialParsed = null;
+                if (strlen($literal) == strlen($literalAwaited)) {
+                    if ($literal === $literalAwaited) {
+                        yield $this->createToken($literalAwaited, static::LITERALS[$literalAwaited]);
+                        $literalAwaited = null;
+                        $literal = null;
                     } else {
-                        throw TokenizerException::unexpectedToken($specialParsed, $this->lineNumber, $this->charNumber);
+                        throw TokenizerException::unexpectedToken($literal, $this->lineNumber, $this->charNumber);
                     }
                 }
                 continue;
@@ -141,21 +147,21 @@ class Tokenizer implements IteratorAggregate
             } elseif (strpos('+-0123456789', $char) !== false) {
                 $number = $char;
             } elseif ($char == 't') {
-                $specialActual = Token::TRUE;
-                $specialParsed = $char;
+                $literalAwaited = Token::TRUE;
+                $literal = $char;
             } elseif ($char == 'f') {
-                $specialActual = Token::FALSE;
-                $specialParsed = $char;
+                $literalAwaited = Token::FALSE;
+                $literal = $char;
             } elseif ($char == 'n') {
-                $specialActual = Token::NULL;
-                $specialParsed = $char;
+                $literalAwaited = Token::NULL;
+                $literal = $char;
             } else {
                 throw TokenizerException::unexpectedCharacter($char, $this->lineNumber, $this->charNumber);
             }
         }
 
-        if ($string !== null || $specialParsed != null) {
-            throw TokenizerException::malformedString($string ?? $specialParsed, $this->lineNumber, $this->charNumber);
+        if ($string !== null || $literal != null) {
+            throw TokenizerException::malformedString($string ?? $literal, $this->lineNumber, $this->charNumber);
         }
 
         if ($number !== null) {

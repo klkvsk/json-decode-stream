@@ -51,7 +51,7 @@ class Parser
     }
 
     /**
-     * @param string|string[]|Collector|Collector[] $selectors
+     * @param string|string[]|CollectorInterface|CollectorInterface[] $selectors
      * single or coma-separated selector string
      * or custom CollectorInterface implementation
      * or array of any of both

@@ -10,33 +10,36 @@ class TokenizerException extends JsonDecodeStreamException
     const CODE_MALFORMED_NUMBER = 201;
     const CODE_MALFORMED_STRING = 202;
 
-    public function __construct($message, int $lineNumber, int $charNumber, int $code)
+    public function __construct($message, int $lineNumber, int $charNumber = null, int $code = null)
     {
-        parent::__construct($message . " at $lineNumber:$charNumber", $code);
+        if ($lineNumber !== null && $charNumber !== null) {
+            $message .= " at $lineNumber:$charNumber";
+        }
+        parent::__construct($message, $code);
     }
 
-    public static function unexpectedToken(string $token, int $lineNumber, int $charNumber)
+    public static function unexpectedToken(string $token, int $lineNumber = null, int $charNumber = null)
     {
         return new static(
             sprintf('Unexpected token `%s`', $token), $lineNumber, $charNumber, static::CODE_UNEXPECTED_TOKEN
         );
     }
 
-    public static function unexpectedCharacter(string $char, int $lineNumber, int $charNumber)
+    public static function unexpectedCharacter(string $char, int $lineNumber = null, int $charNumber = null)
     {
         return new static(
             sprintf('Unexpected character `%s`', $char), $lineNumber, $charNumber, static::CODE_UNEXPECTED_CHAR
         );
     }
 
-    public static function malformedNumber(string $number, int $lineNumber, int $charNumber)
+    public static function malformedNumber(string $number, int $lineNumber = null, int $charNumber = null)
     {
         return new static(
             sprintf('Malformed number `%s`', $number), $lineNumber, $charNumber, static::CODE_MALFORMED_NUMBER
         );
     }
 
-    public static function malformedString(string $string, int $lineNumber, int $charNumber)
+    public static function malformedString(string $string, int $lineNumber = null, int $charNumber = null)
     {
         return new static(
             sprintf('Malformed string `%s`', $string), $lineNumber, $charNumber, static::CODE_MALFORMED_STRING

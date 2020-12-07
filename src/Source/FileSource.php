@@ -23,7 +23,11 @@ class FileSource implements SourceInterface
     public function __destruct()
     {
         if ($this->handle) {
-            fclose($this->handle);
+            try {
+                fclose($this->handle);
+            } catch (Throwable $e) {
+                // ignore
+            }
         }
     }
 
@@ -36,13 +40,18 @@ class FileSource implements SourceInterface
         if (!$this->handle) {
             $exception = null;
             try {
-                $this->handle = fopen($this->filename, 'r');
+                $handle = fopen($this->filename, 'r');
+                if (!$handle) {
+                    $error = error_get_last();
+                    throw new \RuntimeException($error ? $error['message'] : 'fopen error');
+                }
+                $this->handle = $handle;
             } catch (Throwable $e) {
                 $this->handle = null;
                 $exception = $e;
             }
             if (!$this->handle) {
-                throw new SourceException("could not open file '{$this->filename}'", 0, $exception);
+                throw new SourceException("Could not open file '{$this->filename}'", 0, $exception);
             }
         }
 

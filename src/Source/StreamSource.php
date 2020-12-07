@@ -18,7 +18,7 @@ class StreamSource implements SourceInterface
     public function __construct($stream)
     {
         if (!is_resource($stream)) {
-            throw new SourceException('argument is not a resource');
+            throw new SourceException('Argument is not a resource');
         }
         $this->stream = $stream;
     }
@@ -30,20 +30,43 @@ class StreamSource implements SourceInterface
 
     public function read(int $bytes): string
     {
-        return fread($this->stream, $bytes);
+        try {
+            $read = fread($this->stream, $bytes);
+            if ($read === false) {
+                $error = error_get_last();
+                throw new \RuntimeException($error ? $error['message'] : 'fread error');
+            }
+        } catch (\Throwable $e) {
+            throw new SourceException('Cound not read from stream', 0, $e);
+        }
+
+        return $read;
     }
 
     public function rewind(): void
     {
-        if (ftell($this->stream) === 0) {
-            return;
-        }
+        try {
+            $tell = ftell($this->stream);
+            if ($tell === false) {
+                $error = error_get_last();
+                throw new \RuntimeException($error ? $error['message'] : 'ftell error');
+            }
+            if ($tell === 0) {
+                return;
+            }
 
-        $streamMetaData = stream_get_meta_data($this->stream);
-        if (!$streamMetaData['seekable']) {
-            throw new SourceException('This stream is not seekable, can not rewind after data was read');
-        }
+            $streamMetaData = stream_get_meta_data($this->stream);
+            if (!$streamMetaData['seekable']) {
+                throw new SourceException('This stream is not seekable, can not rewind after data was read');
+            }
 
-        fseek($this->stream, 0, SEEK_SET);
+            $seek = fseek($this->stream, 0, SEEK_SET);
+            if ($seek === -1) {
+                $error = error_get_last();
+                throw new \RuntimeException($error ? $error['message'] : 'fseek error');
+            }
+        } catch (\Throwable $e) {
+            throw new SourceException('Cound not seek the stream', 0, $e);
+        }
     }
 }

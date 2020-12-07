@@ -14,7 +14,7 @@ class ParserException extends JsonDecodeStreamException
     const CODE_UNEXPECTED_TOKEN = 101;
     const CODE_EXPECTED_BUT_GOT = 102;
 
-    public function __construct($message, int $code, ?int $lineNumber = null, ?int $charNumber = null)
+    public function __construct($message, int $code, int $lineNumber = null, int $charNumber = null)
     {
         if ($lineNumber !== null && $charNumber !== null) {
             $message .= " at $lineNumber:$charNumber";
@@ -43,6 +43,15 @@ class ParserException extends JsonDecodeStreamException
 
     public static function unexpectedCollectorReturn($yielded, Event $event)
     {
-
+        if (is_array($yielded)) {
+            $dumped = 'array of '  . count($yielded);
+        } else if (is_object($yielded)) {
+            $dumped = get_class($yielded);
+        } else {
+            $dumped = gettype($yielded);
+        }
+        return new static(
+            'Wrong value returned from collector: ' . $dumped, $event->getLineNumber(), $event->getCharNumber()
+        );
     }
 }
