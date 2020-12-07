@@ -160,7 +160,7 @@ class Tokenizer implements IteratorAggregate
             }
         }
 
-        if ($string !== null || $literal != null) {
+        if ($string !== null || $literal !== null) {
             throw TokenizerException::malformedString($string ?? $literal, $this->lineNumber, $this->charNumber);
         }
 
