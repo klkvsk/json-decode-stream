@@ -51,10 +51,11 @@ class Parser
     }
 
     /**
-     * @param string|string[]|CollectorInterface|CollectorInterface[] $selectors
+     * @param null|string|string[]|CollectorInterface|CollectorInterface[] $selectors
      * single or coma-separated selector string
      * or custom CollectorInterface implementation
      * or array of any of both
+     * or null to collect whole documents
      * @param bool                                  $objectsAsAssoc
      * @return iterable|Generator
      * @throws Exception\CollectorException
@@ -62,7 +63,7 @@ class Parser
      * @throws Exception\TokenizerException
      * @throws ParserException
      */
-    public function items($selectors, bool $objectsAsAssoc = false)
+    public function items($selectors = null, bool $objectsAsAssoc = false)
     {
         if (is_string($selectors)) {
             $selectorsArray = explode(',', $selectors);
@@ -70,15 +71,14 @@ class Parser
             $selectorsArray = $selectors;
         } else if ($selectors instanceof CollectorInterface) {
             $selectorsArray = [ $selectors ];
+        } else if ($selectors === null) {
+            $selectorsArray = [ null ];
         } else {
             throw new ParserException('Unexpected selectors are provided', ParserException::CODE_INVALID_ARGUMENT);
         }
-        if (empty($selectorsArray)) {
-            throw new ParserException('No selectors are provided', ParserException::CODE_INVALID_ARGUMENT);
-        }
         $collectors = [];
         foreach ($selectorsArray as $selector) {
-            if (is_string($selector)) {
+            if (is_string($selector) || is_null($selector)) {
                 $collectors[] = new Collector($selector, $objectsAsAssoc);
             } elseif ($selector instanceof CollectorInterface) {
                 $collectors[] = $selector;
@@ -153,6 +153,11 @@ class Parser
                         yield $createEvent(Event::ARRAY_START);
 
                         $stack->push(StackFrame::array());
+                        break;
+
+                    case Token::WHITESPACE:
+                    case Token::COMA:
+                        // this is ignored at top-level to parse json sequences
                         break;
 
                     default:

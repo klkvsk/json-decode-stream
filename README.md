@@ -114,6 +114,7 @@ Methods:
     - coma-separated selector strings: `"result.total, result.users[]"`
     - array of selector strings: `[ "result.total", "result.users[]" ]`
     - custom CollectorInterface or array of them
+    - `null` to collect whole objects/arrays in JSON-sequences (separated with coma or/and newline in source)
 
     String selectors are converted to `Collector` classes internally.
 

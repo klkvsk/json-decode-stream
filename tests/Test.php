@@ -16,7 +16,7 @@ use SplFileInfo;
  */
 abstract class Test extends TestCase
 {
-    protected function getSampleFiles($subdirectory = '')
+    protected function getSampleFiles($subdirectory = '', $ext = 'json')
     {
         $subdirectory = trim($subdirectory, '/');
         $searchPath = __DIR__ . '/data/';
@@ -32,7 +32,7 @@ abstract class Test extends TestCase
             )
         );
         foreach ($files as $file) {
-            if ($file->getExtension() !== 'json') {
+            if ($file->getExtension() !== $ext) {
                 continue;
             }
 

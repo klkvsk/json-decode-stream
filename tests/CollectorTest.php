@@ -117,6 +117,39 @@ class CollectorTest extends Test
         ] ];
     }
 
+    /**
+     * @dataProvider multipleDocumentsDataProvider
+     */
+    public function testFieldInMultipleDocuments($file)
+    {
+        $parser = Parser::fromFile($file);
+        $collectedIds = [];
+        foreach ($parser->items('id') as $key => $value) {
+            $collectedIds[] = $value;
+        }
+
+        $this->assertEquals([1, 2, 3], $collectedIds);
+    }
+
+    /**
+     * @dataProvider multipleDocumentsDataProvider
+     */
+    public function testMultipleDocuments($file)
+    {
+        $parser = Parser::fromFile($file);
+        $collectedDocuments = [];
+        foreach ($parser->items() as $key => $value) {
+            $collectedDocuments[] = $value;
+        }
+
+        $this->assertArraysAreEqual([ ['id'=>1], ['id'=>2], ['id'=>3] ], $collectedDocuments);
+    }
+
+    public function multipleDocumentsDataProvider()
+    {
+        yield from $this->getSampleFiles('multiple-documents', 'json-seq');
+    }
+
     protected function assertArraysAreEqual($expected, $actual)
     {
         $this->assertEquals(
