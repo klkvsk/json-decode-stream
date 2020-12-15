@@ -119,7 +119,7 @@ Methods:
     String selectors are converted to `Collector` classes internally.
 
     For default Collector, iterated values have their full path in key, 
-like `"result.users[4]" => [ "num" => "Five", ... ]` 
+like `"result.users[4]" => ["num" => "Five", ..]` 
 
 #### Event
 Methods:
