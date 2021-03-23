@@ -55,6 +55,9 @@ class TokenizerTest extends Test
             '1.23E10' => [ '1.23E10', [ [ Token::NUMBER => 1.23e10 ] ] ],
             '1.23e-2' => [ '1.23e-2', [ [ Token::NUMBER => 1.23e-2 ] ] ],
             '1.23e+2' => [ '1.23e+2', [ [ Token::NUMBER => 1.23e2 ] ] ],
+            '1.23e-02' => [ '1.23e-02', [ [ Token::NUMBER => 1.23e-2 ] ] ],
+            '1.23e+02' => [ '1.23e+02', [ [ Token::NUMBER => 1.23e2 ] ] ],
+            '1.23e02' => [ '1.23e02', [ [ Token::NUMBER => 1.23e2 ] ] ],
 
             'true'  => [ 'true', [ [ Token::TRUE => true ] ] ],
             'false' => [ 'false', [ [ Token::FALSE => false ] ] ],
