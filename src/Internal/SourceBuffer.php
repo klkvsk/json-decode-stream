@@ -36,7 +36,7 @@ class SourceBuffer implements Iterator
 
     public function current()
     {
-        if ($this->buffer === null) {
+        if (!$this->valid()) {
             return null;
         }
 
@@ -61,7 +61,8 @@ class SourceBuffer implements Iterator
 
     public function valid()
     {
-        return $this->buffer !== null;
+        return $this->buffer !== null
+            && $this->bufferPosition < $this->bufferSize;
     }
 
     public function rewind()

@@ -4,7 +4,9 @@ declare(strict_types=1);
 namespace JsonDecodeStream\Tests;
 
 use JsonDecodeStream\Internal\SourceBuffer;
+use JsonDecodeStream\Source\Psr7Source;
 use JsonDecodeStream\Source\StringSource;
+use Nyholm\Psr7\Factory\Psr17Factory;
 
 class BufferTest extends Test
 {
@@ -60,9 +62,18 @@ class BufferTest extends Test
         $this->assertFalse($buffer->valid());
     }
 
-    public function testEmptyBuffer()
+    public function testEmptyStringBuffer()
     {
         $buffer = new SourceBuffer(new StringSource(''));
+        $buffer->rewind();
+        $this->assertFalse($buffer->valid());
+    }
+
+    public function testEmptyStreamBuffer()
+    {
+        $psr7DataFactory = new Psr17Factory();
+        $psr7Data = $psr7DataFactory->createStream('');
+        $buffer = new SourceBuffer(new Psr7Source($psr7Data));
         $buffer->rewind();
         $this->assertFalse($buffer->valid());
     }
