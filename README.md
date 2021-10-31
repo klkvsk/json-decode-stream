@@ -12,7 +12,7 @@ This is especially useful when parsing large JSON files.
 
 ## Installation
 ```shell script
-composer install klkvsk/json-decode-stream
+composer require klkvsk/json-decode-stream
 ``` 
 
 ## Basic usage
