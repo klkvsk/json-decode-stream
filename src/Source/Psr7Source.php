@@ -27,7 +27,9 @@ class Psr7Source implements SourceInterface
 
     public function rewind(): void
     {
-        $this->stream->rewind();
+        if ($this->stream->isSeekable()) {
+            $this->stream->rewind();
+        }
     }
 
     public function getStream()
