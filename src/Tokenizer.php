@@ -36,7 +36,7 @@ class Tokenizer implements IteratorAggregate
      * @psalm-return \Traversable<Token>
      * @throws TokenizerException
      */
-    public function getIterator()
+    public function getIterator(): \Traversable
     {
         return $this->tokens();
     }
