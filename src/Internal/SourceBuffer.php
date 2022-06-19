@@ -34,7 +34,7 @@ class SourceBuffer implements Iterator
         }
     }
 
-    public function current()
+    public function current(): ?string
     {
         if (!$this->valid()) {
             return null;
@@ -43,7 +43,7 @@ class SourceBuffer implements Iterator
         return $this->buffer[$this->bufferPosition];
     }
 
-    public function next()
+    public function next(): void
     {
         $this->bufferPosition++;
         if ($this->bufferPosition == min($this->bufferMaxSize, $this->bufferSize)) {
@@ -54,18 +54,18 @@ class SourceBuffer implements Iterator
         }
     }
 
-    public function key()
+    public function key(): int
     {
         return $this->sourcePosition;
     }
 
-    public function valid()
+    public function valid(): bool
     {
         return $this->buffer !== null
             && $this->bufferPosition < $this->bufferSize;
     }
 
-    public function rewind()
+    public function rewind(): void
     {
         $this->source->rewind();
         $this->nextBuffer();
